@@ -4,7 +4,7 @@ using Dalamud.Plugin;
 using System.IO;
 using System.Reflection;
 
-namespace SamplePlugin
+namespace FFXIVPlugin
 {
     public sealed class Plugin : IDalamudPlugin
     {
