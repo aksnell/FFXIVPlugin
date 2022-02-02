@@ -1,29 +1,26 @@
-﻿using Dalamud.Configuration;
+﻿using System;
+using Dalamud.Configuration;
 using Dalamud.Plugin;
-using System;
 
-namespace FFXIVPlugin
+namespace FFXIVPlugin;
+
+[Serializable]
+public class Configuration : IPluginConfiguration
 {
-    [Serializable]
-    public class Configuration : IPluginConfiguration
+    // the below exist just to make saving less cumbersome
+
+    [NonSerialized] private DalamudPluginInterface? _pluginInterface;
+
+    public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
+    public int Version { get; set; } = 0;
+
+    public void Initialize(DalamudPluginInterface pluginInterface)
     {
-        public int Version { get; set; } = 0;
+        _pluginInterface = pluginInterface;
+    }
 
-        public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
-
-        // the below exist just to make saving less cumbersome
-
-        [NonSerialized]
-        private DalamudPluginInterface? pluginInterface;
-
-        public void Initialize(DalamudPluginInterface pluginInterface)
-        {
-            this.pluginInterface = pluginInterface;
-        }
-
-        public void Save()
-        {
-            this.pluginInterface!.SavePluginConfig(this);
-        }
+    public void Save()
+    {
+        _pluginInterface!.SavePluginConfig(this);
     }
 }
