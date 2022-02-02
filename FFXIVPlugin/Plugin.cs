@@ -1,8 +1,10 @@
 ﻿using Dalamud.Game.Command;
+using Dalamud.Game.ClientState.Objects;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
 using System.Reflection;
+using Dalamud.Game.ClientState;
 
 namespace FFXIVPlugin
 {
@@ -10,19 +12,22 @@ namespace FFXIVPlugin
     {
         public string Name => "Sample Plugin";
 
-        private const string commandName = "/pmycommand";
+        private const string commandName = "/goatsarecool";
 
         private DalamudPluginInterface PluginInterface { get; init; }
         private CommandManager CommandManager { get; init; }
+        private ObjectTable ObjectTable { get; init; }
         private Configuration Configuration { get; init; }
         private PluginUI PluginUi { get; init; }
 
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] CommandManager commandManager)
+            [RequiredVersion("1.0")] CommandManager commandManager,
+            [RequiredVersion("1.0")] ObjectTable objectTable)
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
+            this.ObjectTable = objectTable;
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
@@ -30,7 +35,8 @@ namespace FFXIVPlugin
             // you might normally want to embed resources and load them from the manifest stream
             var imagePath = Path.Combine(PluginInterface.AssemblyLocation.Directory?.FullName!, "goat.png");
             var goatImage = this.PluginInterface.UiBuilder.LoadImage(imagePath);
-            this.PluginUi = new PluginUI(this.Configuration, goatImage);
+
+            this.PluginUi = new PluginUI(this.Configuration, goatImage, this.ObjectTable);
 
             this.CommandManager.AddHandler(commandName, new CommandInfo(OnCommand)
             {

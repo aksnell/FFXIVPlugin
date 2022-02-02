@@ -1,6 +1,12 @@
 ﻿using ImGuiNET;
 using System;
+using System.IO;
 using System.Numerics;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.Types;
+using Lumina.Excel.GeneratedSheets;
 
 namespace FFXIVPlugin
 {
@@ -12,6 +18,8 @@ namespace FFXIVPlugin
 
         private ImGuiScene.TextureWrap goatImage;
 
+        private ObjectTable objectTable;
+
         // this extra bool exists for ImGui, since you can't ref a property
         private bool visible = false;
         public bool Visible
@@ -21,6 +29,7 @@ namespace FFXIVPlugin
         }
 
         private bool settingsVisible = false;
+
         public bool SettingsVisible
         {
             get { return this.settingsVisible; }
@@ -28,12 +37,13 @@ namespace FFXIVPlugin
         }
 
         // passing in the image here just for simplicity
-        public PluginUI(Configuration configuration, ImGuiScene.TextureWrap goatImage)
+        public PluginUI(Configuration configuration, ImGuiScene.TextureWrap goatImage, ObjectTable objectTable)
         {
+            this.objectTable = objectTable;
             this.configuration = configuration;
             this.goatImage = goatImage;
         }
-
+        
         public void Dispose()
         {
             this.goatImage.Dispose();
@@ -73,6 +83,26 @@ namespace FFXIVPlugin
                 ImGui.Spacing();
 
                 ImGui.Text("Have a goat:");
+                ImGui.Text("Have MORE GOATS:");
+                ImGui.Text(this.objectTable.Length.ToString());
+                var objPtr = objectTable.GetObjectAddress(0);
+                ImGui.Text(objPtr.ToString());
+                var whatEvenIsThis = objectTable.CreateObjectReference(objPtr);
+                ImGui.Text(whatEvenIsThis != null ? whatEvenIsThis.ToString() : "this ain't working chief");
+                
+                foreach (var ele in objectTable)
+                {
+                    switch (ele.ObjectKind)
+                    {
+                        case ObjectKind.CardStand:
+                            PluginUI.Log(ele.ToString());
+                            break;
+                        default:
+                            PluginUI.Log(ele.ToString());
+                            break;
+                    }
+                }
+                
                 ImGui.Indent(55);
                 ImGui.Image(this.goatImage.ImGuiHandle, new Vector2(this.goatImage.Width, this.goatImage.Height));
                 ImGui.Unindent(55);
