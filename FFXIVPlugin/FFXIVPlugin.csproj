@@ -6,8 +6,8 @@
     <Version>0.0.0.1</Version>
     <Description>A sample plugin.</Description>
     <Copyright></Copyright>
-    <PackageProjectUrl>https://github.com/goatcorp/SamplePlugin</PackageProjectUrl>
-    <RootNamespace>SamplePlugin</RootNamespace>
+    <PackageProjectUrl>https://github.com/aksnell/FFIXVPlugin</PackageProjectUrl>
+    <RootNamespace>FFXIVPlugin</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,11 +18,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>$(AppData)\XIVLauncher\devPlugins\SamplePlugin\</OutputPath>
+    <OutputPath>$(AppData)\XIVLauncher\devPlugins\FFXIVPlugin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Data\samplePlugin.json">
+    <Content Include="..\Data\FFXIVPlugin.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Data\goat.png">
